@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wybór Wykresu</title>
+
+<!--CSS    -->
+
+ <style>
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #152A59;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+#container {
+    display: flex;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFF7;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+#sidebar {
+    width: 20%;
+    padding: 20px;
+    background-color: #FFFFF7;
+    color: #FFFFF7;
+}
+
+#chartContainer {
+    width: 80%;
+    padding: 20px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #FFFFFF7;
+    color: #333;
+}
+
+li a {
+    text-decoration: none;
+    color: #FFFFF7;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+}
+
+</style>
+    <!--załadowanie biblioteki do wykresów-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+<body>
+    {% block content %}
+    {% if user.is_authenticated and user.is_staff %}
+    <li><h2><a href="/dashboard">Strona główna</a></h2></li>
+    <div id="container">
+        <div id="sidebar">
+            <label for="chartTypeSelector">Rodzaj wykresu:</label>
+            <select id="chartTypeSelector" onchange="changeChartType()">
+                <option value="fos">Liczba pobrań dla kierunku</option>
+                <option value="data">Liczba pobrań dla inżynierii danych</option>
+                <option value="ie">Liczba pobrań dla informatyki i ekonometrii</option>
+                <option value="mat">Liczba pobrań dla matematyki</option>
+                <option value="pro">Liczba pobrań dla projektów</option>
+                <option value="sex">Liczba kobiet i mężczyzn</option>
+                <option value="voi">Liczba zainteresowanych-województwo</option>
+            </select>
+        </div>
+        <div id="chartContainer">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+
+    <script>
+
+function getConfig() {
+        let datax = []
+        let labels = []
+        let diagramlabel = ''
+
+{#    var chartType = 'bar';  // Domyślny rodzaj wykresu#}
+       if (document.getElementById('chartTypeSelector').value === 'fos') {
+            datax = {{ FieldsOfStudy_data }}
+            labels = {{ FieldsOfStudy_label|safe }}
+            diagramlabel = 'Liczba pobrań dla kierunku'
+       } else if(document.getElementById('chartTypeSelector').value === 'data') {
+            datax = {{ Inżynieria_danych_data }}
+            labels = {{ Inżynieria_danych_label|safe }}
+            diagramlabel = 'Liczba pobrań dla Inżynierii Danych'
+       } else if(document.getElementById('chartTypeSelector').value === 'ie') {
+            datax = {{ Informatyka_i_Ekonometria_data }}
+            labels = {{ Informatyka_i_Ekonometria_label|safe }}
+            diagramlabel = 'Liczba pobrań dla Informatyki i Ekonometrii'
+       } else if(document.getElementById('chartTypeSelector').value === 'mat') {
+            datax = {{ Matematyka_data }}
+            labels = {{ Matematyka_label|safe }}
+            diagramlabel = 'Liczba pobrań dla Matematyki'
+       } else if(document.getElementById('chartTypeSelector').value === 'sex') {
+            datax = {{ SexData }}
+            labels = {{ SexLabels|safe }}
+            diagramlabel = 'Liczba kobiet i mężczyzn'
+       } else if(document.getElementById('chartTypeSelector').value === 'voi') {
+            datax = {{ VoiData }}
+            labels = {{ VoiLabels|safe }}
+            diagramlabel = 'Liczba zainteresowanych-województwo'
+       } else if(document.getElementById('chartTypeSelector').value === 'pro') {
+            datax = {{ Projects_data }}
+            labels = {{ Projects_label|safe }}
+            diagramlabel = 'Liczba pobrań dla szkoły modelowania'
+       }
+
+
+     let config = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: datax,
+          backgroundColor: [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#E91E63'
+          ],
+          label: diagramlabel
+        }],
+        labels: labels,
+      },
+
+      options: {
+        responsive: true,
+        scales: {
+        xAxes: [{
+        ticks: {
+          fontWeight: 'bold',
+        }
+      }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    fontWeight: 'bold',
+                }
+            }]
+        }
+      }
+    };
+    return config;
+    }
+
+    window.onload = function() {
+      getConfig();
+      updateChart();
+    };
+
+    function changeChartType() {
+      chartType = document.getElementById('chartTypeSelector').value;
+      updateChart();
+    }
+
+    function updateChart() {
+      // Usuń poprzedni wykres
+      if (window.myChart) {
+        window.myChart.destroy();
+      }
+
+      // Utwórz nowy wykres z aktualnym rodzajem
+      var ctx = document.getElementById('chart').getContext('2d');
+      window.myChart = new Chart(ctx, getConfig());
+    }
+
+</script>
+    {% else %}
+    <p>Only lecturers can view this content!</p>
+    <br>
+    <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<!--CSS-->
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+
+.category-bar {
+   background-color: #273959;
+    padding: 2vh;
+    height: 96vh;
+    border-right-width: 3px;
+    border-right-color: #193F85;
+    border-right-style: inset;
+}
+
+.category-bar h2 {
+     margin-top: 0;
+    color: #FFFFF7;
+    text-shadow: 0px 5px 5px #152A59
+}
+
+.category-bar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.category-bar ul li {
+    margin-bottom: 10px;
+    color: #FFFFF7;
+}
+
+.content {
+    flex: 3;
+    padding: 6vh;
+    background-color: #FFFFF7;
+}
+
+.content h1 {
+    margin-top: 0;
+}
+
+li a {
+     text-decoration: none;
+     color: #FFFFF7;
+}
+
+button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 25px;
+      color: #FFFFF7;
+      background-color: #152A59;
+      margin: 15px;
+      transition: background-color 0.5s ease;
+      cursor: pointer;
+}
+
+hr {
+    border-color: #FFFFF7;
+    color: #FFFFFF7;
+}
+
+a {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+</style>
+
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated %}
+    <div class="container">
+        <div class="category-bar">
+             <hr>
+                <li><h2><a href="/dashboard">Strona główna</a></h2></li>
+            <hr>
+            <h2>Kierunki</h2>
+            <ul>
+                {% for fos in fos_list %}
+                <li><a href="/subjects/{{ fos.name }}"><b>{{ fos.name }}</b></a></li>
+                {% endfor %}
+                <hr>
+                <h2>Projekty</h2>
+                {% for project in project_list %}
+                <li><a href="/projects/{{ project.name }}"><b>{{ project.name }}</b></a></li>
+                {% endfor %}
+                <hr>
+                {% if user.is_authenticated and user.is_staff %}
+                <h2>Inne</h2>
+                <li><a href="/diagrams"><b>Wykresy</b></a></li>
+                <li><a href="/createProject"><b>Dodaj projekt</b></a></li>
+                <li><a href="/createSubject"><b>Dodaj przedmiot</b></a></li>
+                <li><a href="/createFileProject"><b>Dodaj plik do projektu</b></a></li>
+                <li><a href="/createFileSubject"><b>Dodaj plik do przedmiotu</b></a></li>
+                {% endif %}
+        </ul>
+    </div>
+    <div class="content">
+        <h1>{{ current_fos.name }}</h1>
+        <div id="categoryContent">
+            {% for semestr, querySet in result_dict.items %}
+            <h2>Semestr: {{ semestr }}</h2>
+                {% for subjects in querySet %}
+                        <a href="/files_subject/{{ subjects.name }}/{{ current_fos.name }}" class="siema">
+                            <button>{{ subjects.name }}</button>
+                        </a>
+                {% endfor %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    {% endblock %}
+    <script src="script.js"></script>
+</body>
+</html>
+
+

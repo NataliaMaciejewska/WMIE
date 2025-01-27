@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+
+<!--    CSS-->
+
+    <style>
+
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 5vh;
+        }
+
+        body {
+            padding-top: 10vh;
+            width: 100%;
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FFFFF7;
+        }
+        form {
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding-right: 40px;
+            background-color: #273959;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            background-color: #FFFFF7;
+        }
+
+        label {
+            font-weight: bold;
+            color: #FFFFF7;
+        }
+
+        input[type="submit"] {
+            width: 107%;
+            background-color: #FFFFF7;
+            color: #273959;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #E9C41A;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<!--formularz-->
+
+<body>
+
+{% block content %}
+<h1>Zarejestruj się</h1>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="sex">Płeć:</label>
+        <select id="sex" name="sex">
+            <option value="Mężczyzna">Mężczyzna</option>
+            <option value="Kobieta">Kobieta</option>
+        </select><br><br>
+
+        <label for="voivodeship">Województwo:</label>
+        <select id="voivodeship" name="voivodeship">
+            <option value="Dolnośląskie">Dolnośląskie</option>
+            <option value="Kujawsko-pomorskie">Kujawsko-pomorskie</option>
+            <option value="Lubelskie">Lubelskie</option>
+            <option value="Lubuskie">Lubuskie</option>
+            <option value="Łódzkie">Łódzkie</option>
+            <option value="Małopolskie">Małopolskie</option>
+            <option value="Mazowieckie">Mazowieckie</option>
+            <option value="Opolskie">Opolskie</option>
+            <option value="Podkarpackie">Podkarpackie</option>
+            <option value="Podlaskie">Podlaskie</option>
+            <option value="Pomorskie">Pomorskie</option>
+            <option value="Śląskie">Śląskie</option>
+            <option value="Świętokrzyskie">Świętokrzyskie</option>
+            <option value="Warmińsko-mazurskie">Warmińsko-mazurskie</option>
+            <option value="Wielkopolskie">Wielkopolskie</option>
+            <option value="Zachodniopomorskie">Zachodniopomorskie</option>
+        </select><br><br>
+
+
+        <label for="password1">Hasło:</label>
+        <input type="password" id="password1" name="password1" required><br><br>
+        <label for="password2">Potwierdź hasło:</label>
+        <input type="password" id="password2" name="password2" required><br><br>
+        <input type="submit" name="Create User" value="Zarejestruj">
+    </form>
+
+
+</body>
+</html>
+{% endblock content %}

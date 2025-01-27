@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodaj przedmiot</title>
+</head>
+
+<!--formularz-->
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated and user.is_staff %}
+    <h1>Dodaj przedmiot</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Dodaj</button>
+    </form>
+    {% else %}
+    <p>Nie jesteś zalogowany</p>
+    <a href="{% url 'login' %}">Zaloguj się</a>
+    {% endif %}
+    {% endblock %}
+</body>
+
+<!--CSS-->
+
+<style>
+
+body {
+    background-color: #FFFFF7;
+}
+
+.container {
+    margin-top: 20px;
+    background-color: #FFFFF7;
+}
+
+h1 {
+    text-align: center;
+}
+
+label{
+font-weight: bold;
+}
+
+form {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #273959;
+    border-radius: 5px;
+    color: #FFFFF7;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    color: #FFFF7;
+    font-weight: bold;
+}
+
+select {
+background-color: #FFFFF7;
+color: #273959;
+border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #FFFF7;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #273959;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+button[type="submit"]:hover {
+    background-color: #E9C41A;
+}
+
+</style>
+</html>
