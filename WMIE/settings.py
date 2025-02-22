@@ -27,6 +27,8 @@ DEBUG = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+
+
 ALLOWED_HOSTS = []
 
 # Dodawanie uworzonych aplikacji
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     # my apps
+    'Departments',
     'Subjects',
     'WMIE',
     'Users',
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'departments.middleware.DepartmentMiddleware',
 ]
 
 ROOT_URLCONF = 'WMIE.urls'
@@ -83,8 +87,12 @@ WSGI_APPLICATION = 'WMIE.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'wmie',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 

@@ -82,3 +82,4 @@ class FilesProject(models.Model):
         verbose_name_plural = "FilesProjects"
 
 # klasa Meta jest tworzona, by była poprawnie utworzona liczba mnoga od nazwy klasy
+
