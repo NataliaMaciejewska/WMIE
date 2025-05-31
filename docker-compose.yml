@@ -1,0 +1,216 @@
+version: '3.9'
+
+services:
+  wtzg:
+    image: postgres:15
+    restart: always
+    volumes:
+      - postgres_data1:/var/lib/postgresql/data
+      - ./init_db/init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
+    environment:
+      POSTGRES_DB: wtzg
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+
+  users:
+    image: postgres:15
+    restart: always
+    volumes:
+      - postgres_data2:/var/lib/postgresql/data
+      - ./init_db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+
+  wtzg-app:
+    build: ../WTZG
+    restart: always
+    depends_on:
+      - users
+    ports:
+      - "0.0.0.0:8008:8000"
+    #      - ":::8008:8000"
+    environment:
+      DB_SCHEMA: "WNSP"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wnsp:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8001:8000"
+#      - ":::8001:8000"
+    environment:
+      DB_SCHEMA: "WNSP"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wnit:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8002:8000"
+#      - ":::8002:8000"
+    environment:
+      DB_SCHEMA: "WNIT"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wnpe:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8003:8000"
+#      - ":::8003:8000"
+    environment:
+      DB_SCHEMA: "WNPE"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  cm:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8004:8000"
+#      - ":::8004:8000"
+    environment:
+      DB_SCHEMA: "CM"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wa:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8005:8000"
+#      - ":::8005:8000"
+    environment:
+      DB_SCHEMA: "WA"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wh:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8006:8000"
+#      - ":::8006:8000"
+    environment:
+      DB_SCHEMA: "WH"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+  wns:
+    build: .
+    restart: always
+    depends_on:
+      - wtzg
+      - users
+    ports:
+      - "0.0.0.0:8007:8000"
+#      - ":::8007:8000"
+    environment:
+      DB_SCHEMA: "WNS"
+      MODE: mode_1
+      DB1_NAME: wtzg
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB1_HOST: wtzg
+      DB1_PORT: 5432
+      DB2_NAME: users
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB2_HOST: users
+      DB2_PORT: 5432
+
+volumes:
+  postgres_data1:
+  postgres_data2:
