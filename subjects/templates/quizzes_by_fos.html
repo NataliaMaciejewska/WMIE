@@ -1,0 +1,10 @@
+{% block content %}
+  <h2>Quizy dla kierunku</h2>
+  <ul>
+    {% for quiz in quizzes %}
+      <li><a href="{% url 'quiz_detail' quiz.id %}">{{ quiz.name }}</a></li>
+    {% empty %}
+      <li>Brak quizów dla tego kierunku.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

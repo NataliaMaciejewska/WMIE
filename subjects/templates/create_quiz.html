@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Stwórz nowy quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 30px;
+        }
+
+        .quiz-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        a.btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        a.btn-back button {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <h2>📝 Stwórz nowy quiz</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Utwórz Quiz</button>
+    </form>
+
+    <a href="{% url 'home' %}" class="btn-back">
+        <button type="button">⬅️ Wróć</button>
+    </a>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 from subjects.models import FilesProject, Projects, FieldsOfStudy, FilesFieldsOfStudy
 from django import forms
 
+from .models import  Quiz, Question, Answer
 
 # class DownloadFileForm(forms.Form):
 #     file_path = forms.CharField(max_length=255)
@@ -58,3 +59,20 @@ class FilesProjectForm(forms.ModelForm):
             'project': 'Projekt',
             'file': 'Dodaj plik',
         }
+
+################ quizy ##################
+
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['title', 'fos']
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['text']
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['text', 'is_correct']
