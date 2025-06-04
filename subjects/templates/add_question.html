@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj pytania do quizu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 30px;
+        }
+
+        .quiz-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button,
+        .btn-link {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-link {
+            background-color: #6c757d;
+            text-decoration: none;
+        }
+
+        ul {
+            padding-left: 20px;
+            color: green;
+            margin-top: 10px;
+        }
+
+        hr {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <h2>➕ Dodaj pytania do quizu</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div id="questions-container">
+            <div class="question-block" data-index="0">
+                <label>Pytanie:</label>
+                <input type="text" name="question_0" required>
+
+                <label>Odpowiedzi:</label>
+                <input type="text" name="answer_0_0" required>
+                <input type="text" name="answer_0_1">
+                <input type="text" name="answer_0_2">
+                <input type="text" name="answer_0_3">
+
+                <label>Numer poprawnej odpowiedzi (1–4):</label>
+                <input type="number" name="correct_0" min="1" max="4" required>
+            </div>
+        </div>
+
+        <button type="button" id="add-question">➕ Dodaj kolejne pytanie</button>
+        <button type="submit">✅ Zapisz quiz</button>
+
+        <a href="{% url 'main_dashboard' %}" class="btn-link">⬅️ Powrót do kierunków</a>
+    </form>
+</div>
+
+<script>
+    let index = 1;
+    document.getElementById('add-question').addEventListener('click', () => {
+        const container = document.getElementById('questions-container');
+        const div = document.createElement('div');
+        div.classList.add('question-block');
+        div.dataset.index = index;
+
+        div.innerHTML = `
+            <label>Pytanie:</label>
+            <input type="text" name="question_${index}" required>
+
+            <label>Odpowiedzi:</label>
+            <input type="text" name="answer_${index}_0" required>
+            <input type="text" name="answer_${index}_1">
+            <input type="text" name="answer_${index}_2">
+            <input type="text" name="answer_${index}_3">
+
+            <label>Numer poprawnej odpowiedzi (1–4):</label>
+            <input type="number" name="correct_${index}" min="1" max="4" required>
+        `;
+
+        container.appendChild(div);
+        index++;
+    });
+</script>
+</body>
+</html>

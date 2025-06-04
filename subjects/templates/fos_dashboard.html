@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <!--CSS-->
@@ -53,8 +52,8 @@
 
     .category-bar h2 {
         margin-top: 0;
-        color: #FFFFF7;
-        text-shadow: 0px 5px 5px #152A59;
+        color: white;
+        text-shadow: 0 5px 5px #152A59;
     }
 
     .category-bar ul {
@@ -64,26 +63,17 @@
 
     .category-bar ul li {
         margin-bottom: 10px;
-        color: #FFFFF7;
     }
 
     .content {
         flex: 3;
-        padding: 6vh;
-        background-color: #FFFFF7;
     }
 
     .content h1 {
         margin-top: 0;
     }
 
-    a {
-        display: inline-block;
-        max-width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+
 
     li a {
         text-decoration: none;
@@ -104,7 +94,7 @@
 
     hr {
         border-color: #FFFFF7;
-        color: #FFFFFF7;
+        color: #FFFFF7;
     }
 
 </style>
@@ -115,13 +105,25 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container">
+            <div style="position: fixed; top: 20px; right: 20px; background: #222; padding: 10px 15px; border-radius: 8px; z-index: 999;">
+                <label for="quiz-select" style="color: white; font-weight: bold; margin-right: 8px;">Quizy:</label>
+                <select id="quiz-select" onchange="if(this.value) window.location.href=this.value;" style="padding: 5px 8px; border-radius: 5px;">
+                    <option value="">Wybierz quiz</option>
+                    {% for quiz in quiz_list %}
+                        <option value="{% url 'quiz_detail' quiz.id %}">{{ quiz.title }}</option>
+                    {% empty %}
+                        <option value="">Brak quizów dla tego kierunku</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
             <div class="category-bar">
                 <hr>
                 <li><h2><a href="/dashboard">Strona główna</a></h2></li>
                 <hr>
                 <h2>Kierunki</h2>
                 <ul>
-                    {% for fos in fos_list %}
+                    {% for fos in fields_of_study %}
                         <li><a href="/field-of-study/{{ fos.id }}"><b>{{ fos.name }}</b></a></li>
                     {% endfor %}
                     <hr>
@@ -135,12 +137,14 @@
                         <li><a href="/diagrams"><b>Wykresy</b></a></li>
                         <li><a href="/create-project"><b>Dodaj projekt</b></a></li>
                         <li><a href="/create-file-project"><b>Dodaj plik do projektu</b></a></li>
-                        <li><a href="/create-file-fos"><b>Dodaj plik do wydziału</b></a></li>
+                        <li><a href="/create-file-fos"><b>Dodaj plik do kierunku</b></a></li>
+                        <li><a href="/create-quiz"><b>Dodaj quiz</b></a></li>
+                        
                     {% endif %}
                     {% if user.is_superuser %}
                         <hr>
                         <li><a href="/admin"><b>
-                            <h2>Panel administratora<h2></h2>
+                            <h2>Panel administratora</h2>
                         </b></a></li>
                     {% endif %}
                 
@@ -158,9 +162,8 @@
             <div class="content">
                 <h1>{{ fos.name }}</h1>
                 <div id="categoryContent">
-                    {% for file in files %}
-                        <a href="/download-file-project/{{ file.name }}/{{ project.name }}" download
-                           class="siema">
+                    {% for file in files_fos %}
+                        <a href="/view-file-fos/{{ file.name }}/{{ fos.name }}" target="_blank" class="siema">
                             <button>{{ file.name }}</button>
                         </a>
                     {% endfor %}

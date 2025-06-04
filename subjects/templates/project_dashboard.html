@@ -131,7 +131,7 @@
                         <li><a href="/diagrams"><b>Wykresy</b></a></li>
                         <li><a href="/create-project"><b>Dodaj projekt</b></a></li>
                         <li><a href="/create-file-project"><b>Dodaj plik do projektu</b></a></li>
-                        <li><a href="/create-file-fos"><b>Dodaj plik do wydziału</b></a></li>
+                        <li><a href="/create-file-fos"><b>Dodaj plik do kierunku</b></a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -140,8 +140,8 @@
                 <h1>{{ project_name }}</h1>
                 <div id="categoryContent">
                     {% for file in files %}
-                        <a href="/download_file_project/{{ file.name }}/{{ project_name }}" download>
-                            <button>{{ file.name }}</button>
+                        <a href="/view-file-project/{{ file.name }}/{{ project_name }}" target="_blank" class="siema">
+                            <button type="button">{{ file.name }}</button>
                         </a>
                     {% endfor %}
                 </div>

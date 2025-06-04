@@ -5,12 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <!--CSS-->
-
 <style>
+
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -54,7 +53,7 @@
     .category-bar h2 {
         margin-top: 0;
         color: white;
-        text-shadow: 0px 5px 5px #152A59
+        text-shadow: 0 5px 5px #152A59;
     }
 
     .category-bar ul {
@@ -89,10 +88,6 @@
         color: white;
     }
 
-    #categoryContent {
-        display: flex;
-        justify-content: center;
-    }
 
     hr {
         border-color: #ffff;
@@ -115,8 +110,6 @@
     }
 
 </style>
-</head>
-
 
 <body>
 {% block content %}
@@ -143,12 +136,12 @@
                         <li><a href="/diagrams"><b>Wykresy</b></a></li>
                         <li><a href="/create-project"><b>Dodaj projekt</b></a></li>
                         <li><a href="/create-file-project"><b>Dodaj plik do projektu</b></a></li>
-                        <li><a href="/create-file-fos"><b>Dodaj plik do wydziału</b></a></li>
+                        <li><a href="/create-file-fos"><b>Dodaj plik do kierunku</b></a></li>
                     {% endif %}
                     {% if user.is_superuser %}
                         <hr>
                         <li><a href="/admin"><b>
-                            <h2>Panel administratora<h2></h2>
+                            <h2>Panel administratora</h2>
                         </b></a></li>
                     {% endif %}
                 

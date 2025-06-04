@@ -1,29 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Create Subject</title>
 </head>
 
-<!--formularz-->
-
-<body>
-    {% block content %}
-    {% if user.is_authenticated and user.is_staff %}
-    <h1>Dodaj plik do przedmiotu</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Dodaj</button>
-    </form>
-    {% else %}
-    <p>Nie jesteś zalogowany</p>
-    <a href="{% url 'login' %}">Zaloguj się</a>
-    {% endif %}
-    {% endblock %}
-</body>
-
 <!--CSS-->
-
 <style>
 
 body {
@@ -81,4 +63,21 @@ button[type="submit"]:hover {
 }
 
 </style>
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated and user.is_staff %}
+    <h1>Dodaj plik do kierunku</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Dodaj</button>
+    </form>
+    {% else %}
+    <p>Nie jesteś zalogowany</p>
+    <a href="{% url 'login' %}">Zaloguj się</a>
+    {% endif %}
+    {% endblock %}
+</body>
+
 </html>
